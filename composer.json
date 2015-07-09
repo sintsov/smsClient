@@ -1,7 +1,6 @@
 {
     "name": "smsClient",
     "description": "PHP-класс для работы с API сервисов СМС уведомлений",
-    "version": "1.0",
     "type": "library",
     "keywords": [
         "sms",
