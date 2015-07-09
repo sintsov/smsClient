@@ -35,7 +35,7 @@ php composer.phar require sintsov/smsclient "dev-master"
 
 #### DevinoTelecom
 
-...
+```
 require_once 'vendor/autoload.php';
 
 ini_set('display_errors', 1);
@@ -67,5 +67,5 @@ try {
 } catch (\SmsClient\DevinoSMS\Exception $e) {
     echo $e->getMessage();
 }
-...
+```
 
