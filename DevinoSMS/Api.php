@@ -32,6 +32,7 @@ class Api extends ApiMethod {
         $this->login = $login;
         $this->password = $password;
         $this->client = new Client();
+        $this->sessionId = $this->getSessionID();
     }
 
     /**
