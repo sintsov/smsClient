@@ -127,6 +127,32 @@ class Api extends ApiMethod {
     }
 
     /**
+     * Запрос статуса SMS-сообщения
+     *
+     * @param string $messageID ID сообщения.
+     *
+     * @return object объект:
+     *		State	- статус сообщения. @see SMSClientSMSStatus
+     *		TimeStampUtc		- дата и время получения ответа
+     *		StateDescription	- описание статуса
+     *		CreationDateUtc		- дата создания
+     *		SubmittedDateUtc	- дата отправки
+     *		ReportedDateUtc		- дата доставки
+     *		Price	- цена за сообщение
+     * @throws Exception
+     */
+    public function getSMSStatus($messageID) {
+        $result = $this->request('get', self::METHOD_SMS_STATUS, [
+            'sessionId' => $this->sessionId,
+            'messageId' => $messageID
+        ]);
+
+        $result->State = Status::getStatusByCode($result->State);
+        $result->TimeStampUtc = substr(substr($result->TimeStampUtc, 6), 0, -2); // GMT -> UTC
+        return $result;
+    }
+
+    /**
      * Формирует набор данных параметров для отправки SMS уведолмения
      *
      * @param string  $sourceAddress отправитель. До 11 латинских символов или до 15 цифровых.

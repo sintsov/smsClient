@@ -15,5 +15,6 @@ class ApiMethod {
     const METHOD_SMS_SEND               = 'sms/send';
     const METHOD_SMS_SEND_BULK          = 'sms/sendBulk';
     const METHOD_SMS_SEND_BY_TIME_ZONE  = 'sms/SendByTimeZone';
+    const METHOD_SMS_STATUS             = 'sms/state';
 
 }
