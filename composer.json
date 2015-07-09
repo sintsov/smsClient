@@ -1,5 +1,5 @@
 {
-    "name": "smsClient",
+    "name": "sintsov/smsClient",
     "description": "PHP-класс для работы с API сервисов СМС уведомлений",
     "type": "library",
     "keywords": [
