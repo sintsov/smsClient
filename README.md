@@ -18,7 +18,7 @@ php composer.phar install
 
 
 ```
-php composer.phar require sintsov/smsClient
+php composer.phar require sintsov/smsclient "dev-master"
 ```
 
 ### Требования
