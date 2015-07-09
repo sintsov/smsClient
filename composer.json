@@ -1,0 +1,34 @@
+{
+    "name": "smsClient",
+    "description": "PHP-класс для работы с API сервисов СМС уведомлений",
+    "type": "library",
+    "keywords": [
+        "sms",
+        "devinotelecom",
+        "devino",
+        "devinosms",
+        "api"
+    ],
+    "homepage": "https://github.com/sintsov/smsClient",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sintsov Roman",
+            "email": "romiras_spb@mail.ru",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/sintsov/smsClient/issues",
+        "source": "https://github.com/sintsov/smsClient"
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "guzzlehttp/guzzle": "~6"
+    },
+    "autoload": {
+        "psr-4": {
+            "SmsClient\\": ""
+        }
+    }
+}
