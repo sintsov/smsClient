@@ -39,10 +39,12 @@ class DevinoClient implements \SmsClient\Client\iClient {
             $response = $client->$requestType($this->getUrl($method), ['form_params' => $params]);
         } catch (ClientException $e) {
             $failResponse = $e->getResponse();
-            throw new Exception($failResponse->getReasonPhrase() . ' [ClientException]', $failResponse->getStatusCode());
+            $body = json_decode($failResponse->getBody());
+            throw new Exception($failResponse->getReasonPhrase() . ($body->Desc) ? $body->Desc : ''. ' [ClientException]', $failResponse->getStatusCode());
         } catch (ServerException $e) {
             $failResponse = $e->getResponse();
-            throw new Exception($failResponse->getReasonPhrase() . ' [ServerException]', $failResponse->getStatusCode());
+            $body = json_decode($failResponse->getBody());
+            throw new Exception($failResponse->getReasonPhrase() . ($body->Desc) ? $body->Desc : ''. ' [ServerException]', $failResponse->getStatusCode());
         }
         if ($response->getStatusCode() == 200) {
             return json_decode($response->getBody());

@@ -28,6 +28,6 @@ class Exception extends \Exception {
             '404'   => 'Не найдена запрошеная страница'
         );
 
-        return (isset($error[$code])) ? $error[$code] . " (Код ошибки: {$code})" :  "Неизвестная ошибка: {$this->getMessage()} (Код ошибки: {$code})";
+        return (isset($error[$code])) ? $error[$code] . " (Код ошибки: {$code})" :  "{$this->getMessage()} (Код ошибки: {$code})";
     }
 }

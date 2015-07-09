@@ -1,7 +1,7 @@
 <?php
 /**
  * Описывает метод Devino REST API
- * 
+ *
  * @author Sintsov Roman <romiras_spb@mail.ru>
  */
 
@@ -16,5 +16,7 @@ class ApiMethod {
     const METHOD_SMS_SEND_BULK          = 'sms/sendBulk';
     const METHOD_SMS_SEND_BY_TIME_ZONE  = 'sms/SendByTimeZone';
     const METHOD_SMS_STATUS             = 'sms/state';
+    const METHOD_SMS_INBOX              = 'sms/in';
+    const METHOD_SMS_STATISTICS         = 'sms/statistics';
 
 }

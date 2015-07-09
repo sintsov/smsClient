@@ -86,7 +86,7 @@ class Api extends ApiMethod {
      * Отправка SMS-сообщения
      *
      * @param string  $sourceAddress отправитель. До 11 латинских символов или до 15 цифровых.
-     * @param string|array  $destinationAddress дрес или массив адресов назначения. (Код страны+код сети+номер телефона, Пример: 79031234567
+     * @param string|array  $destinationAddress адрес или массив адресов назначения. (Код страны+код сети+номер телефона, Пример: 79031234567
      * @param string  $data Текст сообщения
      * @param mixed   $sendDate дата отправки сообщения. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp. Необязательный параметр.
      * @param integer $validity Время жизни сообщения в минутах. Необязательный параметр
@@ -151,6 +151,60 @@ class Api extends ApiMethod {
         $result->State = Status::getStatusByCode($result->State);
         $result->TimeStampUtc = substr(substr($result->TimeStampUtc, 6), 0, -2); // GMT -> UTC
         return $result;
+    }
+
+    /**
+     * Запрос входящих SMS-сообщений за указанный период
+     *
+     * @param mixed $minDateUTC начало периода выборки. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp
+     * @param mixed $maxDateUTC конец периода выборки. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp
+     *
+     * @return array массив объектов с полями:
+     * 		string Data				- текст сообщения
+     *		string SourceAddress	- адрес отправителя
+     *		string DestinationAddress	- адрес приема входящих сообщений
+     *		string ID	- идентификатор сообщения
+     * @throws Exception
+     */
+    public function getInbox($minDateUTC, $maxDateUTC) {
+        if (is_int($minDateUTC)) {
+            $minDateUTC = date('Ymd\TH:i:s', $minDateUTC);
+        }
+
+        if (is_int($maxDateUTC)) {
+            $maxDateUTC = date('Ymd\TH:i:s', $maxDateUTC);
+        }
+
+        return $this->request('get', self::METHOD_SMS_INBOX, [
+            'sessionId' => $this->sessionId,
+            'minDateUTC' => $minDateUTC,
+            'maxDateUTC' => $maxDateUTC
+        ]);
+    }
+
+    /**
+     * Запрос статистики по SMS-рассылкам за указанный период
+     *
+     * @param mixed $startDate начало периода выборки. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp
+     * @param mixed $endDate конец периода выборки. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp
+     *
+     * @return array массив с информацией по статистике
+     * @throws Exception
+     */
+    public function getStatistics($startDate, $endDate) {
+        if (is_int($startDate)) {
+            $startDate = date('Ymd\TH:i:s', $startDate);
+        }
+
+        if (is_int($endDate)) {
+            $endDate = date('Ymd\TH:i:s', $endDate);
+        }
+
+        return $this->request('get', self::METHOD_SMS_STATISTICS, [
+            'sessionId' => $this->sessionId,
+            'startDateTime' => $startDate,
+            'endDateTime' => $endDate
+        ]);
     }
 
     /**
