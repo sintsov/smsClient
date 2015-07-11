@@ -104,6 +104,14 @@ try {
     $result = $devinoSMS->getSMSStatus($id);
     $mes = print_r($result, true);
     echo "<h2>SMS Status: {$mes}</h2>";
+    
+    $result = $devinoSMS->getStatistics('2015-07-09T09:00:00', '2015-07-09T19:00:00');
+    $mes = print_r($result, true);
+    echo "<h2>Get Message statistics: {$mes}</h2>";
+    
+    $result = $devinoSMS->getInbox('2015-07-09T09:00:00', '2015-07-09T19:00:00');
+    $mes = print_r($result, true);
+    echo "<h2>Get Message Inbox: {$mes}</h2>";
 
 } catch (\SmsClient\DevinoSMS\Exception $e) {
     echo $e->getMessage();
