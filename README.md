@@ -172,6 +172,20 @@ _**Описание**_: Запроса баланса
 $devinoSMS->getBalance(); // получить баланс
 ~~~
 
+### getClient
+-----
+_**Описание**_: Получить клиента
+
+##### *Возвращаемое значение*
+*object* SmsClient\Client\ClientInterface
+
+##### *Пример*
+
+~~~
+$client = $devinoSMS->getClient(); // получить клиента
+$client->setTimeout(2); // установить таймаут соединения
+~~~
+
 
 ### Пример использования API
 
@@ -184,7 +198,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(-1);
 
-$devinoSMS = new SmsClient\DevinoSMS\Api('login', 'password');
+use SmsClient\DevinoSMS\Api;
+
+$devinoSMS = new Api('login', 'password');
+// пример установки таймаута в секундах, по дефолту используется 1 секунда
+$devinoSMS->getClinet()->setTimeout(2);
+
 try {
     $sessionID = $devinoSMS->getSessionID();
     echo "<h2>SessionID: {$sessionID}</h2><hr />";
@@ -219,3 +238,8 @@ try {
 }
 ```
 
+### TODO
+
+- [ ] реализовать DI и нормальный интерфейс
+- [ ] вынести настройки в конфиги
+- [ ] написать тесты

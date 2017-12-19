@@ -10,7 +10,8 @@ namespace SmsClient\DevinoSMS;
 
 use SmsClient\Client\DevinoClient as Client;
 
-class Api extends ApiMethod {
+class Api extends ApiMethod
+{
     /**
      * @var string логин
      */
@@ -28,11 +29,28 @@ class Api extends ApiMethod {
      */
     private $client;
 
-    public function __construct($login, $password) {
+    /**
+     * Api constructor.
+     * @param $login
+     * @param $password
+     * @throws Exception
+     */
+    public function __construct($login, $password)
+    {
         $this->login = $login;
         $this->password = $password;
         $this->client = new Client();
         $this->sessionId = $this->getSessionID();
+    }
+
+    /**
+     * Получить клиента для работы АПИ
+     *
+     * @return Client
+     */
+    public function getClinet()
+    {
+        return $this->client;
     }
 
     /**
@@ -44,7 +62,8 @@ class Api extends ApiMethod {
      * @return string результат ответа сервиса
      * @throws Exception
      */
-    private function request($requestType, $method, $params) {
+    private function request($requestType, $method, $params)
+    {
         try {
             $response = $this->client->request($requestType, $method, $params);
         } catch (Exception $e) {
@@ -60,7 +79,8 @@ class Api extends ApiMethod {
      * @return string Идентификатор сессии
      * @throws Exception
      */
-    public function getSessionID() {
+    public function getSessionID()
+    {
         $response = $this->request('get', self::METHOD_SESSION_ID, [
             'login' => $this->login,
             'password' => $this->password
@@ -76,7 +96,8 @@ class Api extends ApiMethod {
      * @return double Баланс
      * @throws Exception
      */
-    public function getBalance() {
+    public function getBalance()
+    {
         return $this->request('get', self::METHOD_GET_BALANCE, [
             'sessionId' => $this->sessionId
         ]);
@@ -85,16 +106,17 @@ class Api extends ApiMethod {
     /**
      * Отправка SMS-сообщения
      *
-     * @param string  $sourceAddress отправитель. До 11 латинских символов или до 15 цифровых.
-     * @param string|array  $destinationAddress адрес или массив адресов назначения. (Код страны+код сети+номер телефона, Пример: 79031234567
-     * @param string  $data Текст сообщения
-     * @param mixed   $sendDate дата отправки сообщения. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp. Необязательный параметр.
+     * @param string $sourceAddress отправитель. До 11 латинских символов или до 15 цифровых.
+     * @param string|array $destinationAddress адрес или массив адресов назначения. (Код страны+код сети+номер телефона, Пример: 79031234567
+     * @param string $data Текст сообщения
+     * @param mixed $sendDate дата отправки сообщения. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp. Необязательный параметр.
      * @param integer $validity Время жизни сообщения в минутах. Необязательный параметр
      *
      * @return array массив идентификаторов сообщений
      * @throws Exception
      */
-    public function send($sourceAddress, $destinationAddress, $data, $sendDate = null, $validity = 0) {
+    public function send($sourceAddress, $destinationAddress, $data, $sendDate = null, $validity = 0)
+    {
         $method = (is_array($destinationAddress)) ? self::METHOD_SMS_SEND_BULK : self::METHOD_SMS_SEND;
         return $this->request(
             'post',
@@ -106,17 +128,18 @@ class Api extends ApiMethod {
     /**
      * Отправка SMS-сообщения с учетом часового пояса получателя.
      *
-     * @param string  $sourceAddress отправитель. До 11 латинских символов или до 15 цифровых.
-     * @param string  $destinationAddress адрес назначения. (Код страны+код сети+номер телефона, Пример: 79031234567
-     * @param string  $data Текст сообщения
-     * @param mixed   $sendDate дата отправки сообщения по местному времени получателя. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp
+     * @param string $sourceAddress отправитель. До 11 латинских символов или до 15 цифровых.
+     * @param string $destinationAddress адрес назначения. (Код страны+код сети+номер телефона, Пример: 79031234567
+     * @param string $data Текст сообщения
+     * @param mixed $sendDate дата отправки сообщения по местному времени получателя. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp
      * @param integer $validity Время жизни сообщения в минутах. Необязательный параметр
      *
      * @return array массив идентификаторов сообщений
      * @throws Exception
      * @throws \Exception
      */
-    public function sendByTimeZone($sourceAddress, $destinationAddress, $data, $sendDate, $validity = 0) {
+    public function sendByTimeZone($sourceAddress, $destinationAddress, $data, $sendDate, $validity = 0)
+    {
         if (!is_string($destinationAddress)) {
             throw new \Exception('Неверный параматер адресат назначения');
         }
@@ -133,16 +156,17 @@ class Api extends ApiMethod {
      * @param string $messageID ID сообщения.
      *
      * @return object объект:
-     *		State	- статус сообщения. @see SMSClientSMSStatus
-     *		TimeStampUtc		- дата и время получения ответа
-     *		StateDescription	- описание статуса
-     *		CreationDateUtc		- дата создания
-     *		SubmittedDateUtc	- дата отправки
-     *		ReportedDateUtc		- дата доставки
-     *		Price	- цена за сообщение
+     *        State    - статус сообщения. @see SMSClientSMSStatus
+     *        TimeStampUtc        - дата и время получения ответа
+     *        StateDescription    - описание статуса
+     *        CreationDateUtc        - дата создания
+     *        SubmittedDateUtc    - дата отправки
+     *        ReportedDateUtc        - дата доставки
+     *        Price    - цена за сообщение
      * @throws Exception
      */
-    public function getSMSStatus($messageID) {
+    public function getSMSStatus($messageID)
+    {
         $result = $this->request('get', self::METHOD_SMS_STATUS, [
             'sessionId' => $this->sessionId,
             'messageId' => $messageID
@@ -160,13 +184,14 @@ class Api extends ApiMethod {
      * @param mixed $maxDateUTC конец периода выборки. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp
      *
      * @return array массив объектов с полями:
-     * 		string Data				- текст сообщения
-     *		string SourceAddress	- адрес отправителя
-     *		string DestinationAddress	- адрес приема входящих сообщений
-     *		string ID	- идентификатор сообщения
+     *        string Data                - текст сообщения
+     *        string SourceAddress    - адрес отправителя
+     *        string DestinationAddress    - адрес приема входящих сообщений
+     *        string ID    - идентификатор сообщения
      * @throws Exception
      */
-    public function getInbox($minDateUTC, $maxDateUTC) {
+    public function getInbox($minDateUTC, $maxDateUTC)
+    {
         if (is_int($minDateUTC)) {
             $minDateUTC = date('Ymd\TH:i:s', $minDateUTC);
         }
@@ -191,7 +216,8 @@ class Api extends ApiMethod {
      * @return array массив с информацией по статистике
      * @throws Exception
      */
-    public function getStatistics($startDate, $endDate) {
+    public function getStatistics($startDate, $endDate)
+    {
         if (is_int($startDate)) {
             $startDate = date('Ymd\TH:i:s', $startDate);
         }
@@ -210,15 +236,16 @@ class Api extends ApiMethod {
     /**
      * Формирует набор данных параметров для отправки SMS уведолмения
      *
-     * @param string  $sourceAddress отправитель. До 11 латинских символов или до 15 цифровых.
-     * @param mixed   $destinationAddress адрес или массив адресов назначения. (Код страны+код сети+номер телефона, Пример: 79031234567
-     * @param string  $data Текст сообщения
-     * @param mixed   $sendDate дата отправки сообщения. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp
+     * @param string $sourceAddress отправитель. До 11 латинских символов или до 15 цифровых.
+     * @param mixed $destinationAddress адрес или массив адресов назначения. (Код страны+код сети+номер телефона, Пример: 79031234567
+     * @param string $data Текст сообщения
+     * @param mixed $sendDate дата отправки сообщения. Строка вида (YYYY-MM-DDTHH:MM:SS) или Timestamp
      * @param integer $validity Время жизни сообщения в минутах
      *
      * @return array Массив с параметрами
      */
-    private function getRequestParams($sourceAddress, $destinationAddress, $data, $sendDate, $validity){
+    private function getRequestParams($sourceAddress, $destinationAddress, $data, $sendDate, $validity)
+    {
         $params = array(
             'sessionId' => $this->sessionId,
             'sourceAddress' => $sourceAddress,

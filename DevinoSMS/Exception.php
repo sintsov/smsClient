@@ -7,7 +7,8 @@
 
 namespace SmsClient\DevinoSMS;
 
-class Exception extends \Exception {
+class Exception extends \Exception
+{
     /**
      * Список констант с кодами ошибок
      */

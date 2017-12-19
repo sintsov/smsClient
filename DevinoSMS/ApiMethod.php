@@ -7,8 +7,8 @@
 
 namespace SmsClient\DevinoSMS;
 
-
-class ApiMethod {
+class ApiMethod
+{
 
     const METHOD_GET_BALANCE            = 'user/balance';
     const METHOD_SESSION_ID             = 'user/sessionid';

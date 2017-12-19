@@ -7,7 +7,8 @@
 
 namespace SmsClient\DevinoSMS;
 
-class Status {
+class Status
+{
     /**
      * Список констант с кодами статусов SMS-сообщений
      */
