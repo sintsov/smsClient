@@ -2,6 +2,7 @@
     "name": "sintsov/smsclient",
     "description": "PHP-класс для работы с API сервисов СМС уведомлений",
     "type": "library",
+    "version": "1.1.0",
     "keywords": [
         "sms",
         "devinotelecom",
